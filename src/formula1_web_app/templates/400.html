@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bad Request</title>
+</head>
+<body>
+    <h1>400 - Bad Request</h1>
+    <p>Identifier '{{ driver_id }}' is not recognized. Try to use 3-letter code like 'KRF': the first letters of the first name: 'K', the first letters of the last name: 'R' and the first letters of the car model: 'F'.</p>
+    <a href="{{ url_for('main.report') }}">Back to report</a>
+</body>
+</html>
