@@ -1,5 +1,10 @@
-from formula1_web_app import create_app
+from formula1_web_app.app_factory import create_app
 
-if __name__ == "__main__":
+
+def main() -> None:
     app = create_app()
     app.run(debug=True)
+
+
+if __name__ == "__main__":
+    main()
