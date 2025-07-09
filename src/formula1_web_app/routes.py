@@ -1,24 +1,25 @@
 from http import HTTPStatus
 
-from flask import Blueprint, current_app, redirect, render_template, request, url_for
+from flask import Blueprint, abort, redirect, render_template, request, url_for
 from flask.typing import ResponseReturnValue
 from formula1_race_analysis.display import SortStrategy, filter_report, sort_report
+from formula1_race_analysis.schemas import ID_LENGTH
 
 from formula1_web_app.cache_config import cache
+from formula1_web_app.data_loader import get_race_results
+from formula1_web_app.settings import settings
 
 main = Blueprint("main", __name__)
 
 
 @main.route("/")
-@cache.cached()
 def index() -> ResponseReturnValue:
     return redirect(url_for("main.report"), 301)
 
 
 @main.route("/report/")
-@cache.cached()
 def report() -> str:
-    race_results = current_app.config["RACE_RESULTS"]
+    race_results = get_race_results()
     order = request.args.get("order", SortStrategy.DESCENDING_ORDER)
     try:
         sort_strategy = SortStrategy(order)
@@ -29,19 +30,37 @@ def report() -> str:
 
 
 @main.route("/report/drivers")
-@cache.cached()
 def drivers_list() -> str:
-    race_results = current_app.config["RACE_RESULTS"]
+    race_results = get_race_results()
     return render_template("drivers.html", race_results=race_results)
 
 
 @main.route("/report/drivers/<driver_id>")
-@cache.cached()
 def driver_info(driver_id: str) -> ResponseReturnValue:
-    race_results = current_app.config["RACE_RESULTS"]
+    race_results = get_race_results()
+    driver_id = driver_id.upper()
+
+    if not driver_id.isalpha() or len(driver_id) != ID_LENGTH:
+        abort(
+            HTTPStatus.BAD_REQUEST,
+            f"Identifier '{driver_id}' is not recognized. "
+            f"Try to use 3-letter code like 'KRF': the first letters of the first name: "
+            f"'K', the first letters of the last name: 'R' and the first letters of the car model: 'F'.",
+        )
+
     filtered_race_results = filter_report(race_results, driver_id)
 
     if not filtered_race_results:
-        return render_template("400.html", driver_id=driver_id), HTTPStatus.BAD_REQUEST
+        abort(HTTPStatus.NOT_FOUND, f"No driver with ID '{driver_id}' found in race data.")
 
     return render_template("driver_info.html", race_results=filtered_race_results, driver_id=driver_id)
+
+
+@main.route("/admin/clean-cache")
+def clean_cache() -> ResponseReturnValue:
+    token = request.args.get("token")
+    if token != settings.admin_token:
+        abort(HTTPStatus.FORBIDDEN, "Access denied: invalid or missing token.")
+
+    cache.delete("get_race_results")
+    return "Cache has been successfully cleaned."
