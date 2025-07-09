@@ -20,15 +20,32 @@ This project builds on the `formula1_race_analysis` package to provide interacti
 - pydantic-settings
 - formula1_race_analysis (installed as a dependency)
 
+## Running the Formula 1 Race Report Web App
+To start the Flask-based Formula 1 Race Report Web App, use the provided CLI script after installing the project.
+
+### Step 1: Install the project
+If you haven't installed the project yet, run:
+
+```bash
+uv pip install -e .
+```
+
+### Step 2: Run the server
+Start the server with the following command:
+
+```bash
+formula1-app
+```
+
 ## URL Routes
 This web application exposes several routes to display and interact with Formula 1 qualifying session data. Below is a complete overview of the available routes and their behavior:
 
-| Route | Description |
-| --- | --- |
-| / | 	Redirects to /report/. Acts as the default entry point. |
-| /report/ | Displays the full qualifying session report. Supports sorting via the order query parameter. |
-| /report/drivers | Lists all drivers who participated in the session. |
-| /report/drivers/<driver_id> | Displays results for a specific driver using a 3-letter ID. Returns 400 Bad Request if the ID is invalid |
+| Route | Description                                                                                               |
+| --- |-----------------------------------------------------------------------------------------------------------|
+| / | 	Redirects to /report/. Acts as the default entry point.                                                  |
+| /report/ | Displays the full qualifying session report. Supports sorting via the order query parameter.              |
+| /report/drivers | Lists all drivers who participated in the session.                                                        |
+| /report/drivers/<driver_id> | Displays results for a specific driver using a 3-letter ID (e.g., `KRF`). Returns **400 Bad Request** if the ID format is invalid or **404 Not Found** if no data is found for the given ID. |
 
 ### /report/
 Displays the full race report sorted by lap times.
