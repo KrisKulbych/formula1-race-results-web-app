@@ -79,6 +79,6 @@ class TestRoutes:
         data = response.get_data(as_text=True)
         # Then
         assert response.status_code == HTTPStatus.OK
-        assert "list of drivers" in data
+        assert "drivers list" in data
         assert "Fernando Alonso" in data
         assert 'href="/report/drivers/FAM"' in data
