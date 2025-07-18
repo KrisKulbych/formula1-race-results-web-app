@@ -7,10 +7,16 @@
 </head>
 <body>
     <div class="content-wrapper">
-        {% block title %}
-        {% endblock %}
-        {% block header %}
-        {% endblock %}
+        <div class="top-controls">
+            {% block title %}
+            {% endblock %}
+            {% block header %}
+            {% endblock %}
+            <div class="sort-buttons-row">
+            {% block sort_buttons %}
+            {% endblock %}
+            </div>
+        </div>
         <table class="content-table">
             {% block content %}
             <thead>
@@ -33,7 +39,7 @@
             </tbody>
             {% endblock %}
         </table>
-        {% block buttons %}
+        {% block report_button %}
         {% endblock %}
     </div>
 </body>

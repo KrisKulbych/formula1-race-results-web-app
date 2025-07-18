@@ -4,7 +4,7 @@
 <h2>Formula1 Race Report</h2>
 {% endblock %}
 {% block header %}
-<h4>list of drivers</h4>
+<h4>drivers list</h4>
 {% endblock %}
 {% block content %}
 <thead>
@@ -22,10 +22,6 @@
 </tbody>
 {% endfor %}
 {% endblock %}
-{% block buttons %}
-<div class="button-group">
-    <div class="row-top">
-            <a href="{{ url_for('main.report', order='asc') }}">Come back to report page</a>
-    </div>
-</div>
+{% block report_button %}
+    <a href="{{ url_for('main.report', order='asc') }}" class="report-button">← Back to Race Report</a>
 {% endblock %}
