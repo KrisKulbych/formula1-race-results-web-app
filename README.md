@@ -14,7 +14,7 @@ This project builds on the `formula1_race_analysis` package to provide interacti
 ****This project is at the early stages of development. 
 
 ## Requirements
-- Python 3.10+
+- Python 3.12+
 - flask
 - flask-caching
 - pydantic-settings
@@ -53,8 +53,8 @@ Displays the full race report sorted by lap times.
 Query Parameters:
 
 | Parameter | Description | Default |
-| --- | --- | --- |
-| order | Sort order: ASC or DESC | DESC |
+| --- | --- |---------|
+| order | Sort order: ASC or DESC | ASC     |
 
 Example:
 ```console
@@ -62,7 +62,7 @@ Example:
 ```
 
 ### /report/drivers/<driver_id>
-Displays data only for the specified driver.
+Displays data for the specified driver.
 
 | Path parameter | Description                                                                                                          | Default |
 |----------------|----------------------------------------------------------------------------------------------------------------------|---------|
@@ -88,23 +88,38 @@ This project is managed with uv. All python dependencies have to be specified in
 ```console
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
-2. Activate virtual environment
+2. Clone the Repository
 ```console
-python -m venv .venv
+https://github.com/KrisKulbych/formula1-race-results-web-app.git
+cd formula1-race-results-web-app
+```
+4. Create a Virtual Environment
+```console
+uv venv
 .venv/Scripts/activate
 ```
-3. Lint and formate code:
+3. Install Dependencies
 ```console
-uvx ruff check
-uvx ruff format
+uv sync --all-groups
 ```
-4. Automatically format code, check linting, and ensure clean commits.
+4. Run the Application
 ```console
-uvx pre-commit run 
+uv pip install -e .
+formula1-app
 ```
-5. Run tests
+5. Lint and format code:
 ```console
-uvx pytest tests\
+ruff check
+ruff format
+mypy .
+```
+6. Automatically format code, check linting, and ensure clean commits.
+```console
+pre-commit run 
+```
+7. Run tests
+```console
+pytest tests
 ```
 
 tags: `python` `python3` `problem-solving` `programming` `learn-python` `formula1-race-report-web-app` `uv` `flask` `flask-cashing` `testpypi`
