@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}
+<h2>Formula1 Race Report</h2>
+{% endblock %}
+{% block header %}
+<h4>sort by lap time</h4>
+{% endblock %}
+{% block sort_buttons %}
+    <a href="{{ url_for('main.report', order='asc') }}" class="sort-buttons">⬆ ascending</a>
+    <a href="{{ url_for('main.report', order='desc') }}" class="sort-buttons">⬇ descending</a>
+{% endblock %}
+{% block content %}
+{{ super() }}
+{% endblock %}
+{% block report_button %}
+    <a href="{{ url_for('main.drivers_list') }}" class="report-button">Driver list</a>
+{% endblock %}
