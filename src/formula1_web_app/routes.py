@@ -3,11 +3,18 @@ from http import HTTPStatus
 from flask import Blueprint, abort, redirect, render_template, request, url_for
 from flask.typing import ResponseReturnValue
 from formula1_race_analysis.display import SortStrategy, filter_report, sort_report
+from formula1_race_analysis.models import RaceResult
 from formula1_race_analysis.schemas import ID_LENGTH
 
-from formula1_web_app.data_loader import get_race_results
+from formula1_web_app.cache_config import cache
+from formula1_web_app.service.data_loader import load_race_results
 
 main = Blueprint("main", __name__)
+
+
+@cache.cached(key_prefix="get_race_results")
+def get_race_results() -> list[RaceResult]:
+    return load_race_results()
 
 
 @main.route("/")
