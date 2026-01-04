@@ -9,22 +9,22 @@
 
 # Formula 1 Race Report Web App
 A Flask-based web application for displaying and exploring Formula 1 qualifying session results.  
-This project builds on the `formula1_race_analysis` package to provide interactive views with caching and sorting functionality.
+Supports both Flask and FastAPI backends.
+
+This project builds on the `formula1_race_analysis` package to provide interactive views, caching, sorting functionality, and a JSON API.
 
 ****This project is at the early stages of development. 
 
 ## Requirements
 - Python 3.12+
-- flask
-- flask-caching
-- pydantic-settings
+- Flask & Flask-caching
+- FastAPI & Uvicorn
+- Pydantic-settings
 - formula1_race_analysis (installed as a dependency)
 
-## Running the Formula 1 Race Report Web App
-To start the Flask-based Formula 1 Race Report Web App, use the provided CLI script after installing the project.
+## Running the Flask Web App
 
 ### Step 1: Install the project
-If you haven't installed the project yet, run:
 
 ```bash
 uv pip install -e .
@@ -37,7 +37,7 @@ Start the server with the following command:
 formula1-app
 ```
 
-## URL Routes
+### Flask Routes
 This web application exposes several routes to display and interact with Formula 1 qualifying session data. Below is a complete overview of the available routes and their behavior:
 
 | Route | Description                                                                                               |
@@ -71,10 +71,41 @@ Displays data for the specified driver.
 ```console
 /report/drivers/KRF
 ```
-## Caching
+### Caching
 Each route is cached using flask-caching:
 - Simple in-memory cache (SimpleCache)
 - Timeout: 10 seconds.
+
+## Running the FastAPI API
+The FastAPI backend exposes the same data via a REST API.
+
+### Step 1: Run the FastAPI server
+```console
+formula1-api
+```
+
+### FastAPI Routes
+Route	Method	Description
+
+| Route | Method | Description                                                                                                  |
+| --- |---|--------------------------------------------------------------------------------------------------------------|
+| / | GET | Redirects to /report/ (default JSON response)                                                                |
+| /report/ | GET | Returns full race report in JSON format. Supports query params: order (ASC or DESC), fmt (json or xml formats) |
+| /report/drivers | GET | Returns a list of all drivers participating in the race                                                      |
+| /report/drivers/{driver_id} | GET | Returns results for a specific driver ID (3-letter code). Returns 400 for invalid ID, 404 if not found       |
+
+Example requests:
+```console
+GET /report/?order=ASC
+GET /report/drivers/
+GET /report/drivers/KRF
+```
+### FastAPI Exception Handling
+
+- 400 Bad Request: Invalid driver ID
+- 404 Not Found: Driver not found in session data
+
+Response includes timestamp and request info for better debugging.
 
 ## Setup Pre-commit Hooks:
 Run this command after cloning the project to enable pre-commit:
@@ -101,11 +132,12 @@ uv venv
 3. Install Dependencies
 ```console
 uv sync --all-groups
+uv pip install -e .
 ```
 4. Run the Application
 ```console
-uv pip install -e .
 formula1-app
+formula1-api
 ```
 5. Lint and format code:
 ```console
@@ -122,4 +154,4 @@ pre-commit run
 pytest tests
 ```
 
-tags: `python` `python3` `problem-solving` `programming` `learn-python` `formula1-race-report-web-app` `uv` `flask` `flask-cashing` `testpypi`
+tags: `python` `python3` `problem-solving` `programming` `learn-python` `formula1-race-report-web-app` `uv` `flask` `flask-cashing` `testpypi` `fastapi` `fastapa-cache2`
