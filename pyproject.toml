@@ -1,6 +1,10 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "formula1-race-results-web-app"
-version = "0.1.0"
+version = "0.2.0"
 description = "Add your description here"
 authors = [{name = "KrisKulbych", email = "k.kulbych@gmail.com"}]
 readme = "README.md"
@@ -11,12 +15,16 @@ dependencies = [
     "pydantic-settings>=2.9.1",
     "formula1-race-analysis==2.0.1",
     "pydantic>=2.11.7",
+    "fastapi==0.116.1",
+    "fastapi-cache2>=0.2.2",
+    "uvicorn==0.40.0",
 ]
 
 [dependency-groups]
 dev = [
     "pytest-cov>=6.2.1",
     "pytest>=8.4.0",
+    "httpx[cli]>=0.28.1",
 ]
 lint = [
     "mypy>=1.16.1",
@@ -26,6 +34,7 @@ lint = [
 
 [project.scripts]
 formula1-app = "main:main"
+formula1-api = "formula1_web_app.api.app:run"
 
 [tool.setuptools]
 py-modules = ["main"]
@@ -41,6 +50,7 @@ formula1_web_app = ["templates/*.html", "static/**/*"]
 
 [tool.uv]
 index-strategy = "unsafe-best-match"
+package = true
 
 [tool.uv.sources]
 formula1-race-analysis = { index = "testpypi" }
