@@ -1,4 +1,4 @@
-name: formula1-race-results-web-app-build
+name: formula1-race-results-web-api-build
 
 on: [push]
 
